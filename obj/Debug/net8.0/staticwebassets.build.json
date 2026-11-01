@@ -1,11 +1,1 @@
-{
-  "Version": 1,
-  "Hash": "dWR4PoSsb9YLHVi9E30Ee9BE5BULirdnVUBSn3R2Vgk=",
-  "Source": "LibraryManagementSystem",
-  "BasePath": "_content/LibraryManagementSystem",
-  "Mode": "Default",
-  "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
-}
+{"Version":1,"Hash":"Zxo065qkrLr8XmAEczyMxbOm/gECXSGagB/YI2fFJG8=","Source":"LibraryManagementSystem","BasePath":"/","Mode":"Root","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}

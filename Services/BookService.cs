@@ -59,10 +59,6 @@ public class BookService : IBookService
             .AsNoTracking()
             .Include(b => b.Category)
             .FirstOrDefaultAsync(b => b.BookId == id && !b.IsDeleted);
-            
-           
-            
-
         if (book == null) return null;
 
         return MapToDto(book);

@@ -139,8 +139,11 @@ C:\Users\loai\Desktop\Container\dotnet\LibraryManagementSystem\obj\Debug\net8.0\
 C:\Users\loai\Desktop\Container\dotnet\LibraryManagementSystem\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\loai\Desktop\Container\dotnet\LibraryManagementSystem\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\loai\Desktop\Container\dotnet\LibraryManagementSystem\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
-C:\Users\loai\Desktop\Container\dotnet\LibraryManagementSystem\obj\Debug\net8.0\staticwebassets\msbuild.LibraryManagementSystem.Microsoft.AspNetCore.StaticWebAssets.props
-C:\Users\loai\Desktop\Container\dotnet\LibraryManagementSystem\obj\Debug\net8.0\staticwebassets\msbuild.build.LibraryManagementSystem.props
-C:\Users\loai\Desktop\Container\dotnet\LibraryManagementSystem\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.LibraryManagementSystem.props
-C:\Users\loai\Desktop\Container\dotnet\LibraryManagementSystem\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.LibraryManagementSystem.props
-C:\Users\loai\Desktop\Container\dotnet\LibraryManagementSystem\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\loai\Desktop\Container\dotnet\LibraryManagementSystem\bin\Debug\net8.0\LibraryManagementSystem.staticwebassets.endpoints.json
+C:\Users\loai\Desktop\Container\dotnet\LibraryManagementSystem\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\loai\Desktop\Container\dotnet\LibraryManagementSystem\obj\Debug\net8.0\rjimswa.dswa.cache.json
+C:\Users\loai\Desktop\Container\dotnet\LibraryManagementSystem\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+C:\Users\loai\Desktop\Container\dotnet\LibraryManagementSystem\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+C:\Users\loai\Desktop\Container\dotnet\LibraryManagementSystem\obj\Debug\net8.0\staticwebassets.build.json.cache
+C:\Users\loai\Desktop\Container\dotnet\LibraryManagementSystem\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\loai\Desktop\Container\dotnet\LibraryManagementSystem\obj\Debug\net8.0\swae.build.ex.cache
