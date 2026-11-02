@@ -2,6 +2,7 @@ using LibraryManagementSystem.Dtos;
 using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
+using LibraryManagementSystem.Exceptions;
 
 namespace LibraryManagementSystem.Services;
 
@@ -69,7 +70,8 @@ public class CategoryService : ICategoryService
             .AsNoTracking()
             .FirstOrDefaultAsync(c => c.CategoryId == id && !c.IsDeleted);
 
-        if (category == null) return null;
+        if (category == null) 
+        throw new NotFoundException($"Category with ID {id} not found.");
 
         return MapToDto(category);
     }
@@ -97,7 +99,8 @@ public class CategoryService : ICategoryService
         var category = await _context.Categories
             .FirstOrDefaultAsync(c => c.CategoryId == id && !c.IsDeleted);
 
-        if (category == null) return null;
+        if (category == null) 
+        throw new NotFoundException($"Category with ID {id} not found.");
 
         category.Name = dto.Name.Trim();
         category.Description = dto.Description ?? string.Empty;
@@ -113,13 +116,13 @@ public class CategoryService : ICategoryService
         var category = await _context.Categories
             .FirstOrDefaultAsync(c => c.CategoryId == id && !c.IsDeleted);
 
-        if (category == null) return false; 
-
-        
+        if (category == null) 
+        throw new NotFoundException($"Category with ID {id} not found.");
         var hasBooks = await _context.Books
             .AnyAsync(b => b.CategoryId == id && !b.IsDeleted);
 
-        if (hasBooks) return false; 
+        if (hasBooks) 
+        throw new BadRequestException($"Cannot delete category with ID {id} because it has associated books."); 
 
         category.IsDeleted = true;
         await _context.SaveChangesAsync();

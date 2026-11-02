@@ -28,11 +28,6 @@ public class CategoriesController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var category = await _categoryService.GetByIdAsync(id);
-
-        if (category == null)
-            return NotFound(ApiResponse<CategoryResponseDto>
-                .FailResponse($"Category with id {id} not found.", 404));
-
         return Ok(ApiResponse<CategoryResponseDto>
             .SuccessResponse(category, "Category retrieved successfully."));
     }
@@ -54,11 +49,6 @@ public class CategoriesController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromBody] CategoryUpdateDto dto)
     {
         var updated = await _categoryService.UpdateAsync(id, dto);
-
-        if (updated == null)
-            return NotFound(ApiResponse<CategoryResponseDto>
-                .FailResponse($"Category with id {id} not found.", 404)); 
-
         return Ok(ApiResponse<CategoryResponseDto>
             .SuccessResponse(updated, "Category updated successfully."));
     }
@@ -67,12 +57,7 @@ public class CategoriesController : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var deleted = await _categoryService.DeleteAsync(id);
-
-        if (!deleted)
-            return BadRequest(ApiResponse<object>
-                .FailResponse("Could not delete the category.", 400)); // TODO Step 8: precise errors
-
+        await _categoryService.DeleteAsync(id);
         return Ok(ApiResponse<object>
             .SuccessResponse(null, "Category deleted successfully."));
     }

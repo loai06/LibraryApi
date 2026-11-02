@@ -1,6 +1,7 @@
 using LibraryManagementSystem.Data;
 using LibraryManagementSystem.Services;
 using Microsoft.EntityFrameworkCore;
+using LibraryManagementSystem.Middleware;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,8 +16,9 @@ builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-if (app.Environment.IsDevelopment())       // new
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -24,7 +26,5 @@ if (app.Environment.IsDevelopment())       // new
 
 //app.UseHttpsRedirection();
 //app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

@@ -27,9 +27,6 @@ public class BookController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var book = await _bookService.GetByIdAsync(id);
-        if (book == null)
-            return NotFound(ApiResponse<BookResponseDto>
-                .FailResponse($"Book with id {id} not found.", 404));
         return Ok(ApiResponse<BookResponseDto>
         .SuccessResponse(book, "Book retrieved successfully."));
     }
@@ -55,11 +52,7 @@ public class BookController : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var deleted = await _bookService.DeleteAsync(id);
-        if (!deleted)
-        return NotFound(ApiResponse<BookResponseDto>
-            .FailResponse($"Book with id {id} not found.", 404));
-
+        await _bookService.DeleteAsync(id);
         return Ok(ApiResponse<BookResponseDto>
             .SuccessResponse(null, "Book deleted successfully."));    
     }
