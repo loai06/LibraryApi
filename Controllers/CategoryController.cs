@@ -15,7 +15,11 @@ public class CategoriesController : ControllerBase
         _categoryService = categoryService;
     }
 
+    /// <summary>
+    /// Retrieves categories with pagination, search by name, and sorting by name or creation date.
+    /// </summary>
     [HttpGet]
+    [ProducesResponseType(typeof(ApiResponse<PagedResult<CategoryResponseDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll([FromQuery] CategoryQueryParams query)
     {
         var result = await _categoryService.GetAllAsync(query);
@@ -23,8 +27,11 @@ public class CategoriesController : ControllerBase
             .SuccessResponse(result, "Categories retrieved successfully."));
     }
 
-    
+    /// <summary>
+    /// Retrieves a category by its ID.
+    /// </summary>
     [HttpGet("{id:int}")]
+    [ProducesResponseType(typeof(ApiResponse<CategoryResponseDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetById(int id)
     {
         var category = await _categoryService.GetByIdAsync(id);
@@ -32,8 +39,11 @@ public class CategoriesController : ControllerBase
             .SuccessResponse(category, "Category retrieved successfully."));
     }
 
-    
+    /// <summary>
+    /// Creates a new category.
+    /// </summary>
     [HttpPost]
+    [ProducesResponseType(typeof(ApiResponse<CategoryResponseDto>), StatusCodes.Status201Created)]
     public async Task<IActionResult> Create([FromBody] CategoryCreateDto dto)
     {
         var created = await _categoryService.CreateAsync(dto);
@@ -44,8 +54,12 @@ public class CategoriesController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, response);
     }
 
-    
+    /// <summary>
+    /// Updates an existing category by its ID.
+    /// </summary>
+
     [HttpPut("{id:int}")]
+    [ProducesResponseType(typeof(ApiResponse<CategoryResponseDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Update(int id, [FromBody] CategoryUpdateDto dto)
     {
         var updated = await _categoryService.UpdateAsync(id, dto);
@@ -53,8 +67,11 @@ public class CategoriesController : ControllerBase
             .SuccessResponse(updated, "Category updated successfully."));
     }
 
-    
+    /// <summary>
+    /// Deletes a category by its ID.
+    /// /// </summary>
     [HttpDelete("{id:int}")]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Delete(int id)
     {
         await _categoryService.DeleteAsync(id);
