@@ -1,6 +1,7 @@
 using LibraryManagementSystem.Dtos;
 using LibraryManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LibraryManagementSystem.Controllers;
 
@@ -43,6 +44,7 @@ public class CategoriesController : ControllerBase
     /// Creates a new category.
     /// </summary>
     [HttpPost]
+     [Authorize]
     [ProducesResponseType(typeof(ApiResponse<CategoryResponseDto>), StatusCodes.Status201Created)]
     public async Task<IActionResult> Create([FromBody] CategoryCreateDto dto)
     {
@@ -59,6 +61,7 @@ public class CategoriesController : ControllerBase
     /// </summary>
 
     [HttpPut("{id:int}")]
+     [Authorize]
     [ProducesResponseType(typeof(ApiResponse<CategoryResponseDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Update(int id, [FromBody] CategoryUpdateDto dto)
     {
@@ -71,6 +74,7 @@ public class CategoriesController : ControllerBase
     /// Deletes a category by its ID.
     /// /// </summary>
     [HttpDelete("{id:int}")]
+     [Authorize]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Delete(int id)
     {

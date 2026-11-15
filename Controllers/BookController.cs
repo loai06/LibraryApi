@@ -1,6 +1,7 @@
 using LibraryManagementSystem.Dtos;
 using LibraryManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LibraryManagementSystem.Controllers;
 
@@ -42,6 +43,8 @@ public class BookController : ControllerBase
     /// <summary>
     /// Creates a new book. 
     /// </summary>
+    
+    [Authorize]
     [HttpPost]
     [ProducesResponseType(typeof(ApiResponse<PagedResult<BookResponseDto>>),StatusCodes.Status200OK)]
     public async Task<IActionResult> Create ([FromBody]BookCreateDto dto)
@@ -56,6 +59,7 @@ public class BookController : ControllerBase
     /// <summary>
     /// Updates an existing book by its ID.
     /// </summary>
+    [Authorize]
     [HttpPut("{id:int}")]
     [ProducesResponseType(typeof(ApiResponse<PagedResult<BookResponseDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Update(int id, [FromBody]BookUpdateDto dto)
@@ -68,6 +72,7 @@ public class BookController : ControllerBase
     /// <summary>
     /// Deletes a book by its ID.
     /// </summary>
+    [Authorize]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
