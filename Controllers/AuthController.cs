@@ -15,7 +15,7 @@ public class AuthController : ControllerBase
         _authServices = authServices;
     }
 
-    
+
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterDTO registerDTO)
     {
@@ -37,4 +37,31 @@ public class AuthController : ControllerBase
         }
         return Ok(response);
     }
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword(
+    [FromBody] ForgotPasswordDto dto)
+    {
+        await _authServices.ForgotPasswordAsync(dto);
+
+        return Ok(new
+        {
+            Message = "If an account exists, a password reset email has been sent."
+        });
+        
+    }
+    [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
+        {
+            var result = await _authServices.ResetPasswordAsync(dto);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            return Ok(new
+            {
+                Message = "Password reset successfully."
+            });
+        }
 }

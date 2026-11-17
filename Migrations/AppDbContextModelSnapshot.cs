@@ -68,6 +68,15 @@ namespace LibraryManagementSystem.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<int>("ResetCodeAttempts")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ResetCodeExpiresAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ResetCodeHash")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
