@@ -1,3 +1,26 @@
 
+# Build output
 bin/
 obj/
+artifacts/
+publish/
+
+# IDE and user-specific files
+.vs/
+.idea/
+*.user
+*.suo
+*.sln.docstates
+
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+appsettings.Local.json
+appsettings.*.Local.json
+*.pfx
+*.p12
+
+# Test output and logs
+TestResults/
+*.log

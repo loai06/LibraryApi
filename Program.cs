@@ -8,6 +8,7 @@ using LibraryManagementSystem.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using LibraryManagementSystem.Repositories;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -60,8 +61,9 @@ builder.Services.Configure<SmtpSettings>(
 builder.Configuration.GetSection("Smtp"));
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IAuthServices, AuthServices>();
-builder.Services.AddScoped<IBookService, BookService>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IBookService, BookServices>();
+builder.Services.AddScoped<ICategoryService, CategoryServices>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -84,7 +86,6 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
