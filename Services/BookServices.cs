@@ -1,3 +1,4 @@
+using AutoMapper;
 using LibraryManagementSystem.Dtos;
 using LibraryManagementSystem.Exceptions;
 using LibraryManagementSystem.Models;
@@ -8,10 +9,12 @@ namespace LibraryManagementSystem.Services;
 public class BookServices : IBookService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public BookServices(IUnitOfWork unitOfWork)
+    public BookServices(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task<PagedResult<BookResponseDto>> GetAllAsync(
@@ -21,7 +24,7 @@ public class BookServices : IBookService
 
         return new PagedResult<BookResponseDto>
         {
-            Items = result.Items.Select(MapToDto).ToList(),
+            Items = _mapper.Map<List<BookResponseDto>>(result.Items),
             TotalCount = result.TotalCount,
             PageNumber = result.PageNumber,
             PageSize = result.PageSize
@@ -39,7 +42,7 @@ public class BookServices : IBookService
                 $"Book with ID {id} not found.");
         }
 
-        return MapToDto(book);
+        return _mapper.Map<BookResponseDto>(book);
     }
 
     public async Task<BookResponseDto> CreateAsync(BookCreateDto dto)
@@ -53,20 +56,13 @@ public class BookServices : IBookService
                 $"Category with ID {dto.CategoryId} does not exist.");
         }
 
-        var book = new Book
-        {
-            Title = dto.Title.Trim(),
-            Author = dto.Author.Trim(),
-            Price = dto.Price,
-            Quantity = dto.Quantity,
-            CategoryId = dto.CategoryId,
-            Category = category
-        };
+        var book = _mapper.Map<Book>(dto);
+        book.Category = category;
 
         await _unitOfWork.Books.AddAsync(book);
         await _unitOfWork.SaveChangesAsync();
 
-        return MapToDto(book);
+        return _mapper.Map<BookResponseDto>(book);
     }
 
     public async Task<BookResponseDto?> UpdateAsync(
@@ -89,16 +85,12 @@ public class BookServices : IBookService
                 $"Book with ID {id} not found.");
         }
 
-        book.Title = dto.Title.Trim();
-        book.Author = dto.Author.Trim();
-        book.Price = dto.Price;
-        book.Quantity = dto.Quantity;
-        book.CategoryId = dto.CategoryId;
+        _mapper.Map(dto, book);
         book.Category = category;
 
         await _unitOfWork.SaveChangesAsync();
 
-        return MapToDto(book);
+        return _mapper.Map<BookResponseDto>(book);
     }
 
     public async Task<bool> DeleteAsync(int id)
@@ -116,20 +108,5 @@ public class BookServices : IBookService
         await _unitOfWork.SaveChangesAsync();
 
         return true;
-    }
-
-    private static BookResponseDto MapToDto(Book book)
-    {
-        return new BookResponseDto
-        {
-            Id = book.BookId,
-            Title = book.Title,
-            Author = book.Author,
-            Price = book.Price,
-            Quantity = book.Quantity,
-            CategoryId = book.CategoryId,
-            CategoryName = book.Category?.Name ?? string.Empty,
-            CreatedAt = book.CreatedAt
-        };
     }
 }

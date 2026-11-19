@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using LibraryManagementSystem.Repositories;
-
+using LibraryManagementSystem.Mappings;
+using FluentValidation;
+using LibraryManagementSystem.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,7 +57,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha256 }
         };
     });
-    builder.Services.AddAuthorization();
+builder.Services.AddAuthorization();
 
 builder.Services.Configure<SmtpSettings>(
 builder.Configuration.GetSection("Smtp"));
@@ -66,22 +68,29 @@ builder.Services.AddScoped<ICategoryService, CategoryServices>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddAutoMapper(
+    cfg => { },
+    typeof(MappingProfile));
+builder.Services
+    .AddValidatorsFromAssemblyContaining<BookCreateDtoValidator>();
+
 builder.Services.AddSwaggerGen(options =>
 {
     var xmlFilename = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
     options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
-{
-    [new OpenApiSecuritySchemeReference("Bearer", document)] = new List<string>()
-});
+    {
+        [new OpenApiSecuritySchemeReference("Bearer", document)] = new List<string>()
+    });
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-{
-    Type = SecuritySchemeType.Http,
-    Scheme = "bearer",
-    BearerFormat = "JWT",
-    Description = "Paste your JWT token only, without the Bearer prefix."
-    
-});
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        Description = "Paste your JWT token only, without the Bearer prefix."
+
+    });
 });
 
 var app = builder.Build();
@@ -97,3 +106,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
+
+public partial class Program { }

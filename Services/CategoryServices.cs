@@ -1,3 +1,4 @@
+using AutoMapper;
 using LibraryManagementSystem.Dtos;
 using LibraryManagementSystem.Exceptions;
 using LibraryManagementSystem.Models;
@@ -8,10 +9,12 @@ namespace LibraryManagementSystem.Services;
 public class CategoryServices : ICategoryService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public CategoryServices(IUnitOfWork unitOfWork)
+    public CategoryServices(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task<PagedResult<CategoryResponseDto>> GetAllAsync(
@@ -21,7 +24,7 @@ public class CategoryServices : ICategoryService
 
         return new PagedResult<CategoryResponseDto>
         {
-            Items = result.Items.Select(MapToDto).ToList(),
+            Items = _mapper.Map<List<CategoryResponseDto>>(result.Items),
             TotalCount = result.TotalCount,
             PageNumber = result.PageNumber,
             PageSize = result.PageSize
@@ -38,24 +41,20 @@ public class CategoryServices : ICategoryService
                 $"Category with ID {id} not found.");
         }
 
-        return MapToDto(category);
+        return _mapper.Map<CategoryResponseDto>(category);
     }
 
     public async Task<CategoryResponseDto> CreateAsync(
         CategoryCreateDto dto)
     {
-        var category = new Category
-        {
-            Name = dto.Name.Trim(),
-            Description = dto.Description ?? string.Empty,
-            CreatedAt = DateTime.UtcNow,
-            IsDeleted = false
-        };
+        var category = _mapper.Map<Category>(dto);
+        category.CreatedAt = DateTime.UtcNow;
+        category.IsDeleted = false;
 
         await _unitOfWork.Categories.AddAsync(category);
         await _unitOfWork.SaveChangesAsync();
 
-        return MapToDto(category);
+        return _mapper.Map<CategoryResponseDto>(category);
     }
 
     public async Task<CategoryResponseDto?> UpdateAsync(
@@ -69,12 +68,11 @@ public class CategoryServices : ICategoryService
                 $"Category with ID {id} not found.");
         }
 
-        category.Name = dto.Name.Trim();
-        category.Description = dto.Description ?? string.Empty;
+        _mapper.Map(dto, category);
 
         await _unitOfWork.SaveChangesAsync();
 
-        return MapToDto(category);
+        return _mapper.Map<CategoryResponseDto>(category);
     }
 
     public async Task<bool> DeleteAsync(int id)
@@ -101,16 +99,5 @@ public class CategoryServices : ICategoryService
         await _unitOfWork.SaveChangesAsync();
 
         return true;
-    }
-
-    private static CategoryResponseDto MapToDto(Category category)
-    {
-        return new CategoryResponseDto
-        {
-            Id = category.CategoryId,
-            Name = category.Name,
-            Description = category.Description,
-            CreatedAt = category.CreatedAt
-        };
     }
 }
